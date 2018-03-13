@@ -1,0 +1,85 @@
+﻿@model IEnumerable<hanna80_ABCMusic_Auth.Models.Song>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ArtistName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AlbumName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TrackNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ReleaseDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Publisher)
+                </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ArtistName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AlbumName)
+            </td>
+            <td>
+				@if (item.TrackNumber.HasValue)
+				{
+					@Html.DisplayFor(modelItem => item.TrackNumber)
+				}
+				else
+				{
+					<p><i>None</i></p>
+				}
+            </td>
+            <td>
+                @if (item.ReleaseDate.HasValue)
+                {
+					DateTime releaseDate = item.ReleaseDate.Value.Date;
+					string displayValue = releaseDate.Month + "/"
+						+ releaseDate.Day + "/"
+						+ releaseDate.Year;
+
+
+                    @Html.DisplayFor(modelItem => displayValue)
+                }
+                else
+                {
+                    <p><i>None</i></p>
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Publisher)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.SongId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.SongId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.SongId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
