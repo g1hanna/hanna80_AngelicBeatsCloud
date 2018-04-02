@@ -8,11 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using hanna80_ABCMusic_Auth.Data;
-using hanna80_ABCMusic_Auth.Models;
-using hanna80_ABCMusic_Auth.Services;
+using ABCMusic_Auth.Data;
+using ABCMusic_Auth.Models;
+using ABCMusic_Auth.Services;
 
-namespace hanna80_ABCMusic_Auth
+namespace ABCMusic_Auth
 {
     public class Startup
     {
@@ -27,7 +27,7 @@ namespace hanna80_ABCMusic_Auth
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<AngelicBeatsDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(Configuration.GetConnectionString("ABCMusic_SQLServer")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<AngelicBeatsDbContext>()

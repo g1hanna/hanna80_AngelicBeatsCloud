@@ -10,11 +10,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using hanna80_ABCMusic_Auth.Models;
-using hanna80_ABCMusic_Auth.Models.ManageViewModels;
-using hanna80_ABCMusic_Auth.Services;
+using ABCMusic_Auth.Models;
+using ABCMusic_Auth.Models.ManageViewModels;
+using ABCMusic_Auth.Services;
 
-namespace hanna80_ABCMusic_Auth.Controllers
+namespace ABCMusic_Auth.Controllers
 {
     [Authorize]
     [Route("[controller]/[action]")]
@@ -522,7 +522,7 @@ namespace hanna80_ABCMusic_Auth.Controllers
         {
             return string.Format(
                 AuthenticatorUriFormat,
-                _urlEncoder.Encode("hanna80_ABCMusic_Auth"),
+                _urlEncoder.Encode("ABCMusic_Auth"),
                 _urlEncoder.Encode(email),
                 unformattedKey);
         }

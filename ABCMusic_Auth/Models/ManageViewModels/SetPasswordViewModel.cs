@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace hanna80_ABCMusic_Auth.Models.ManageViewModels
+namespace ABCMusic_Auth.Models.ManageViewModels
 {
     public class SetPasswordViewModel
     {

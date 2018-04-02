@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using hanna80_ABCMusic_Auth.Controllers;
+using ABCMusic_Auth.Controllers;
 
 namespace Microsoft.AspNetCore.Mvc
 {

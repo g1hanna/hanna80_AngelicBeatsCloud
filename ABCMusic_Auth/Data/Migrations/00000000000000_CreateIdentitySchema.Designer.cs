@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace hanna80_ABCMusic_Auth.Data.Migrations
+namespace ABCMusic_Auth.Data.Migrations
 {
     [DbContext(typeof(AngelicBeatsDbContext))]
     [Migration("00000000000000_CreateIdentitySchema")]
@@ -126,7 +126,7 @@ namespace hanna80_ABCMusic_Auth.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("hanna80_ABCMusic_Auth.Models.ApplicationUser", b =>
+            modelBuilder.Entity("ABCMusic_Auth.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id");
 
@@ -185,7 +185,7 @@ namespace hanna80_ABCMusic_Auth.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("hanna80_ABCMusic_Auth.Models.ApplicationUser")
+                    b.HasOne("ABCMusic_Auth.Models.ApplicationUser")
                         .WithMany("Claims")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -193,7 +193,7 @@ namespace hanna80_ABCMusic_Auth.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("hanna80_ABCMusic_Auth.Models.ApplicationUser")
+                    b.HasOne("ABCMusic_Auth.Models.ApplicationUser")
                         .WithMany("Logins")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -206,7 +206,7 @@ namespace hanna80_ABCMusic_Auth.Data.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("hanna80_ABCMusic_Auth.Models.ApplicationUser")
+                    b.HasOne("ABCMusic_Auth.Models.ApplicationUser")
                         .WithMany("Roles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);

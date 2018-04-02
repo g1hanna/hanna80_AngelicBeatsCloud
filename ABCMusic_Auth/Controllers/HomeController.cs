@@ -4,9 +4,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using hanna80_ABCMusic_Auth.Models;
+using ABCMusic_Auth.Models;
 
-namespace hanna80_ABCMusic_Auth.Controllers
+namespace ABCMusic_Auth.Controllers
 {
     public class HomeController : Controller
     {

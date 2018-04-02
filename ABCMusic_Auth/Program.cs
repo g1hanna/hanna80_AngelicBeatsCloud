@@ -8,10 +8,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using hanna80_ABCMusic_Auth.Data;
+using ABCMusic_Auth.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace hanna80_ABCMusic_Auth
+namespace ABCMusic_Auth
 {
     public class Program
     {

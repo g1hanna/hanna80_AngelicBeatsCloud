@@ -10,11 +10,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using hanna80_ABCMusic_Auth.Models;
-using hanna80_ABCMusic_Auth.Models.AccountViewModels;
-using hanna80_ABCMusic_Auth.Services;
+using ABCMusic_Auth.Models;
+using ABCMusic_Auth.Models.AccountViewModels;
+using ABCMusic_Auth.Services;
 
-namespace hanna80_ABCMusic_Auth.Controllers
+namespace ABCMusic_Auth.Controllers
 {
     [Authorize]
     [Route("[controller]/[action]")]
@@ -220,7 +220,9 @@ namespace hanna80_ABCMusic_Auth.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email,
+                    FirstName = model.FirstName, LastName = model.LastName, Age = (byte)model.Age,
+                    Gender = model.Gender };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

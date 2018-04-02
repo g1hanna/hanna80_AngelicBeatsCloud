@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace hanna80_ABCMusic_Auth.Data.Migrations
+namespace ABCMusic_Auth.Data.Migrations
 {
     public partial class CreateIdentitySchema : Migration
     {

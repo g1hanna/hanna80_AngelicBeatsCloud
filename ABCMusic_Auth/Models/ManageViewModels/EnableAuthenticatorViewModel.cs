@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace hanna80_ABCMusic_Auth.Models.ManageViewModels
+namespace ABCMusic_Auth.Models.ManageViewModels
 {
     public class EnableAuthenticatorViewModel
     {

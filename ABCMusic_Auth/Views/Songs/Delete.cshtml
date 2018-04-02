@@ -1,57 +1,52 @@
-﻿@model hanna80_ABCMusic_Auth.Models.Song
+@model ABCMusic_Auth.Models.Song
 
 @{
-    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Details";
 }
 
-<h2>Delete</h2>
+<div class="row">
+	<div class="col-md-3"></div>
+	<div class="abc-dialog delete-dialog col-md-6">
+		<div class="row">
+			<h4 id="abc-dialog-title" class="panel-header">ARE YOU SURE?</h4>
+			<p class="middle-align">This action cannot be undone.</p>
+		</div>
+		<div class="row">
+			<div class="form-group">
+				<label asp-for="Name" class="control-label"></label>
+				<p>@Html.DisplayFor(model => model.Name)</p>
+			</div>
+			<div class="form-group">
+				<label asp-for="ArtistName" class="control-label"></label>
+				<p>@Html.DisplayFor(model => model.ArtistName)</p>
+			</div>
+			<div class="form-group">
+				<label asp-for="Length" class="control-label"></label>
+				<p>@Html.DisplayFor(model => model.Length)</p>
+			</div>
+			<div class="form-group">
+				<label asp-for="ReleaseDate" class="control-label"></label>
+				<p>@Html.DisplayFor(model => model.ReleaseDate)</p>
+			</div>
+			<div class="form-group">
+				<label asp-for="TrackNumber" class="control-label"></label>
+				<p>@Html.DisplayFor(model => model.TrackNumber)</p>
+			</div>
+			<div class="form-group">
+				<label asp-for="Publisher" class="control-label"></label>
+				<p>@Html.DisplayFor(model => model.Publisher)</p>
+			</div>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Song</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.ArtistName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.ArtistName)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.AlbumName)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.AlbumName)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.TrackNumber)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.TrackNumber)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.ReleaseDate)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.ReleaseDate)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Publisher)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Publisher)
-        </dd>
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="SongId" />
-        <input type="submit" value="Delete" class="btn btn-default" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
+			<form asp-action="Delete">
+				<input type="hidden" asp-for="Id" />
+
+				<div class="form-group middle-align">
+					<input type="button" value="Back" class="btn btn-primary" onclick="location.href='@Url.Action("Details", "Songs", new { Model.Id })'" />
+					<input type="submit" value="Delete" class="btn delete-button" />
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="col-md-3"></div>
 </div>

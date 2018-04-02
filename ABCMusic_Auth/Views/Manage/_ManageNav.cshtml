@@ -1,4 +1,4 @@
-﻿@using hanna80_ABCMusic_Auth.Views.Manage
+﻿@using ABCMusic_Auth.Views.Manage
 @inject SignInManager<ApplicationUser> SignInManager
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();

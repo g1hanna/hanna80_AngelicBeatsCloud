@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace hanna80_ABCMusic_Auth.Models.AccountViewModels
+namespace ABCMusic_Auth.Models.AccountViewModels
 {
     public class ExternalLoginViewModel
     {

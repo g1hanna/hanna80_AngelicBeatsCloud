@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using hanna80_ABCMusic_Auth.Services;
+using ABCMusic_Auth.Services;
 
-namespace hanna80_ABCMusic_Auth.Services
+namespace ABCMusic_Auth.Services
 {
     public static class EmailSenderExtensions
     {

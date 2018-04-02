@@ -1,6 +1,17 @@
 ﻿body {
-    padding-top: 50px;
+    background-color: rgba(0, 0, 0, 0);
+    padding-top: 70px;
     padding-bottom: 20px;
+}
+
+#background-img {
+    filter: blur(5px);
+    top: -50px;
+    left: -10px;
+    width: 120%;
+    height: 120%;
+    position: fixed;
+    z-index: -1;
 }
 
 /* Wrapping element */
@@ -32,4 +43,115 @@
     .carousel-caption {
         display: none;
     }
+}
+
+.abc-panel {
+    background-color: lightgray;
+    border-radius: 30px;
+    padding: 0 10px 10px;
+    margin-bottom: 10px;
+}
+
+.abc-dialog {
+    background-color: lightgray;
+    border-radius: 30px;
+    padding: 10px 30px;
+}
+
+.abc-panel .panel-header, .panel-header {
+    color: white;
+    width: 100%;
+    text-align: center;
+}
+
+#search-panel {
+    background-color: #2F80ED;
+}
+
+#results-panel {
+    background-color: #F2994A;
+}
+
+#title-area {
+    padding: 10px;
+}
+
+#title-area #button-new {
+    background-color: #FCE59D;
+    border-radius: 10px;
+    margin-top: 1pc;
+    padding: 10px
+}
+
+#title-area #button-new:hover {
+    background-color: #fff7dc;
+    cursor: pointer;
+}
+
+#title-area #button-new p {
+    width: 100%;
+    text-align: center;
+    margin: 0px;
+}
+
+.abc-form-field {
+    width: 100%;
+}
+
+.abc-page-title {
+    color: white;
+}
+
+.abc-paginator, .middle-align {
+    margin: auto;
+    width: max-content;
+}
+
+.create-dialog {
+    background-color: #F2C94C;
+}
+
+.update-dialog {
+    background-color: #F2994A;
+}
+
+.view-dialog {
+    background-color: #2F80ED;
+}
+
+.delete-dialog {
+    background-color: #DB2C6B;
+}
+
+.new-button {
+    background-color: #FCE59D;
+    color: #000;
+}
+
+.update-button {
+    background-color: #FFDFC2;
+}
+
+.update-button:hover {
+    background-color: rgb(177, 156, 137);
+    color: white;
+}
+
+.btn-danger {
+    background-color: #FA0059;
+    color: #000;
+}
+
+.btn-primary {
+    background-color: #30FFDA;
+    color: #000;
+}
+
+.delete-button {
+    background-color: #EB578C;
+    color: #000;
+}
+
+.btn {
+    border: 0px solid transparent;
 }

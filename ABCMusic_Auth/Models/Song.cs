@@ -5,32 +5,23 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace hanna80_ABCMusic_Auth.Models
+namespace ABCMusic_Auth.Models
 {
-    public class Song
+    public class Song : Reviewable
     {
 		#region PROPERTIES
-		[DatabaseGenerated(DatabaseGeneratedOption.None)]
-		public int SongId { get; set; }
-
-		[Required()]
-		public string Name { get; set; }
-
-		[Required()]
-		public string ArtistName { get; set; }
-
-		public string AlbumName { get; set; }
-
-		public int? TrackNumber { get; set; }
-		
-		[Column(TypeName = "date")]
-		public DateTime? ReleaseDate { get; set; }
+		public TimeSpan Length { get; set; }
 
 		public string Publisher { get; set; }
+
+		public int? AlbumId { get; set; }
+
+		[Range(0, int.MaxValue, ErrorMessage = "Only non-negative numbers are allowed for track numbers.")]
+		public int? TrackNumber { get; set; }
 		#endregion
 
 		#region NAVIGATION PROPERTIES
-		public ICollection<Review> Reviews { get; set; }
+		public Album Album { get; set; }
 		#endregion
 	}
 }

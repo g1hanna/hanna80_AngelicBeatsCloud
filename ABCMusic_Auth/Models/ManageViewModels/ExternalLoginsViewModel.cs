@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 
-namespace hanna80_ABCMusic_Auth.Models.ManageViewModels
+namespace ABCMusic_Auth.Models.ManageViewModels
 {
     public class ExternalLoginsViewModel
     {
