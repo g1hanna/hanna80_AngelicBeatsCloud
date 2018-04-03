@@ -1,157 +1,174 @@
 ﻿body {
-    background-color: rgba(0, 0, 0, 0);
-    padding-top: 70px;
-    padding-bottom: 20px;
+	background-color: rgba(0, 0, 0, 0);
+	padding-top: 70px;
+	padding-bottom: 20px;
+	min-width: 420px;
 }
 
 #background-img {
-    filter: blur(5px);
-    top: -50px;
-    left: -10px;
-    width: 120%;
-    height: 120%;
-    position: fixed;
-    z-index: -1;
+	filter: blur(5px);
+	top: -50px;
+	left: -10px;
+	width: 120%;
+	height: 120%;
+	position: fixed;
+	z-index: -1;
 }
 
 /* Wrapping element */
 /* Set some basic padding to keep content from hitting the edges */
 .body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+	padding-left: 15px;
+	padding-right: 15px;
 }
 
 /* Carousel */
 .carousel-caption p {
-    font-size: 20px;
-    line-height: 1.4;
+	font-size: 20px;
+	line-height: 1.4;
 }
 
 /* Make .svg files in the carousel display properly in older browsers */
 .carousel-inner .item img[src$=".svg"] {
-    width: 100%;
+	width: 100%;
 }
 
 /* QR code generator */
 #qrCode {
-    margin: 15px;
+	margin: 15px;
 }
 
 /* Hide/rearrange for smaller screens */
 @media screen and (max-width: 767px) {
-    /* Hide captions */
-    .carousel-caption {
-        display: none;
-    }
+	/* Hide captions */
+	.carousel-caption {
+		display: none;
+	}
 }
 
 .abc-panel {
-    background-color: lightgray;
-    border-radius: 30px;
-    padding: 0 10px 10px;
-    margin-bottom: 10px;
+	background-color: lightgray;
+	border-radius: 30px;
+	padding: 0 10px 10px;
+	margin-bottom: 10px;
 }
 
 .abc-dialog {
-    background-color: lightgray;
-    border-radius: 30px;
-    padding: 10px 30px;
+	background-color: lightgray;
+	border-radius: 30px;
+	padding: 10px 30px;
 }
 
 .abc-panel .panel-header, .panel-header {
-    color: white;
-    width: 100%;
-    text-align: center;
+	color: white;
+	width: 100%;
+	text-align: center;
 }
 
 #search-panel {
-    background-color: #2F80ED;
+	background-color: #2F80ED;
 }
 
 #results-panel {
-    background-color: #F2994A;
+	background-color: #F2994A;
 }
 
 #title-area {
-    padding: 10px;
+	padding: 10px;
 }
 
 #title-area #button-new {
-    background-color: #FCE59D;
-    border-radius: 10px;
-    margin-top: 1pc;
-    padding: 10px
+	background-color: #FCE59D;
+	border-radius: 10px;
+	margin-top: 1pc;
+	padding: 10px
 }
 
 #title-area #button-new:hover {
-    background-color: #fff7dc;
-    cursor: pointer;
+	background-color: #fff7dc;
+	cursor: pointer;
 }
 
 #title-area #button-new p {
-    width: 100%;
-    text-align: center;
-    margin: 0px;
+	width: 100%;
+	text-align: center;
+	margin: 0px;
 }
 
 .abc-form-field {
-    width: 100%;
+	width: 100%;
 }
 
 .abc-page-title {
-    color: white;
+	color: white;
 }
 
 .abc-paginator, .middle-align {
-    margin: auto;
-    width: max-content;
+	margin: auto;
+	width: max-content;
 }
 
 .create-dialog {
-    background-color: #F2C94C;
+	background-color: #F2C94C;
 }
 
 .update-dialog {
-    background-color: #F2994A;
+	background-color: #F2994A;
 }
 
 .view-dialog {
-    background-color: #2F80ED;
+	background-color: #2F80ED;
 }
 
 .delete-dialog {
-    background-color: #DB2C6B;
+	background-color: #DB2C6B;
 }
 
 .new-button {
-    background-color: #FCE59D;
-    color: #000;
+	background-color: #FCE59D;
+	color: #000;
 }
 
 .update-button {
-    background-color: #FFDFC2;
+	background-color: #FFDFC2;
 }
 
 .update-button:hover {
-    background-color: rgb(177, 156, 137);
-    color: white;
+	background-color: rgb(177, 156, 137);
+	color: white;
 }
 
 .btn-danger {
-    background-color: #FA0059;
-    color: #000;
+	background-color: #FA0059;
+	color: #000;
 }
 
 .btn-primary {
-    background-color: #30FFDA;
-    color: #000;
+	background-color: #30FFDA;
+	color: #000;
 }
 
 .delete-button {
-    background-color: #EB578C;
-    color: #000;
+	background-color: #EB578C;
+	color: #000;
 }
 
 .btn {
-    border: 0px solid transparent;
+	border: 0px solid transparent;
+}
+
+.abc-item-row {
+    background-color: #eee;
+}
+
+.abc-header-row {
+	background-color: #828282;
+}
+
+.abc-header-row th a {
+	color: #FFCDA1;
+}
+
+.right-align {
+	text-align: right;
 }

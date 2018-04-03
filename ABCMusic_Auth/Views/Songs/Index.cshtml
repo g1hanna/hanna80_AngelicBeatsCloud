@@ -43,8 +43,8 @@
 		</div>
 		<div class="row col-md-2">
 			<br />
-			<input type="submit" value="Search" class="btn btn-success" />
-			<input type="reset" value="Reset" class="btn btn-default" onclick="location.href='@Url.Action("Index", "Songs")'" />
+			<input type="submit" value="Search" class="btn btn-primary" />
+			<input type="reset" value="Reset" class="btn btn-primary" onclick="location.href='@Url.Action("Index", "Songs")'" />
 		</div>
 	</form>
 </div>
@@ -54,16 +54,49 @@
 
 	<table class="table">
 		<thead>
-			<tr>
+			<tr class="abc-header-row">
 				<th>
-					Song&nbsp;@Html.DisplayNameFor(model => model.Name)
+					@Html.ActionLink($"Song {Html.DisplayNameFor(model => model.Name)}", "Index", "Songs",
+						new SongSearchViewModel
+						{
+							EndDate = viewModel.EndDate,
+							FlipOrder = false,
+							PageNumber = 1,
+							PageSize = paginator.ItemsPerPage,
+							SearchCriteria = viewModel.SearchCriteria,
+							SortOrder = "song-name",
+							StartDate = viewModel.StartDate,
+							Rating = viewModel.Rating
+						}) 
 				</th>
 				<th>
 					@*@Html.DisplayNameFor((Song model) => model.Artist.GetName())*@
-					Artist
+					@Html.ActionLink("Artist", "Index", "Songs",
+						new SongSearchViewModel
+						{
+							EndDate = viewModel.EndDate,
+							FlipOrder = false,
+							PageNumber = 1,
+							PageSize = paginator.ItemsPerPage,
+							SearchCriteria = viewModel.SearchCriteria,
+							SortOrder = "artist",
+							StartDate = viewModel.StartDate,
+							Rating = viewModel.Rating
+						})
 				</th>
 				<th>
-					Album&nbsp;@Html.DisplayNameFor(model => model.Album.Name)
+					@Html.ActionLink($"Album {Html.DisplayNameFor(model => model.Album.Name)}", "Index", "Songs",
+						new SongSearchViewModel
+						{
+							EndDate = viewModel.EndDate,
+							FlipOrder = false,
+							PageNumber = 1,
+							PageSize = paginator.ItemsPerPage,
+							SearchCriteria = viewModel.SearchCriteria,
+							SortOrder = "album-name",
+							StartDate = viewModel.StartDate,
+							Rating = viewModel.Rating
+						})
 				</th>
 				@*<th>
 					@Html.DisplayNameFor(model => model.Length)
@@ -72,17 +105,45 @@
 					@Html.DisplayNameFor(model => model.Publisher)
 				</th>*@
 				<th>
-					@Html.DisplayNameFor(model => model.ReleaseDate)
+					@Html.ActionLink($"{Html.DisplayNameFor(model => model.ReleaseDate)}", "Index", "Songs",
+						new SongSearchViewModel
+						{
+							EndDate = viewModel.EndDate,
+							FlipOrder = false,
+							PageNumber = 1,
+							PageSize = paginator.ItemsPerPage,
+							SearchCriteria = viewModel.SearchCriteria,
+							SortOrder = "release-date",
+							StartDate = viewModel.StartDate,
+							Rating = viewModel.Rating
+						})
 				</th>
 				@*<th>
 					@Html.DisplayNameFor(model => model.TrackNumber)
 				</th>*@
-				<th></th>
+				<th class="right-align">
+					<input
+						   type="reset"
+						   value="Reverse"
+						   class="btn btn-primary"
+						   onclick="location.href='@Url.Action("Index", "Songs", new SongSearchViewModel
+							{
+								EndDate = viewModel.EndDate,
+								FlipOrder = !viewModel.FlipOrder,
+								PageNumber = 1,
+								PageSize = paginator.ItemsPerPage,
+								SearchCriteria = viewModel.SearchCriteria,
+								SortOrder = viewModel.SortOrder,
+								StartDate = viewModel.StartDate,
+								Rating = viewModel.Rating
+							})'"
+					/>
+				</th>
 			</tr>
 		</thead>
 		<tbody>
 	@foreach (var item in Model) {
-			<tr>
+			<tr class="abc-item-row abc-song">
 				<td>
 					@Html.DisplayFor(modelItem => item.Name)
 				</td>
@@ -113,7 +174,7 @@
 						@Html.DisplayFor(modelItem => item.TrackNumber)
 					}
 				</td>*@
-				<td>
+				<td class="right-align">
 					<input type="button" value="Edit" class="btn update-button" onclick="location.href='@Url.Action("Edit", "Songs", new { item.Id })'" />
 					<input type="button" value="View" class="btn btn-primary" onclick="location.href='@Url.Action("Details", "Songs", new { item.Id })'" />
 				</td>
@@ -130,3 +191,14 @@
 		</div>
 	</div>
 </div>
+
+<script>
+	var emphasis = @ViewData["emphasisHeaderNum"];
+	if ((emphasis) != null) {
+		if (emphasis >= 0 && emphasis <= 3) {
+			document.getElementsByClassName("abc-header-row")[0]
+				.getElementsByTagName("th")[emphasis]
+				.style.fontSize = "18px";
+		}
+	}
+</script>

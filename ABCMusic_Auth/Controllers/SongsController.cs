@@ -24,6 +24,7 @@ namespace ABCMusic_Auth.Controllers
 		// GET: Songs
 		public async Task<IActionResult> Index(SongSearchViewModel searchModel)
 		{
+			int? emphasisHeaderNum = null;
 			IEnumerable<Song> songs = await _context.Songs.ToListAsync();
 
 			// search criteria
@@ -52,21 +53,25 @@ namespace ABCMusic_Auth.Controllers
 			{
 				case "song-name":
 					songs = songs.OrderBy(s => s.Name);
+					emphasisHeaderNum = 0;
 					break;
 				case "artist":
-					songs = songs.OrderBy(s => s.Artist.GetName());
+					songs = songs.OrderBy(s => s.ArtistName);
+					emphasisHeaderNum = 1;
 					break;
 				case "album-name":
 					songs = songs.OrderBy(s => {
 						if (s.Album != null) return s.Album.Name;
 						else return "Unknown Album";
 					});
+					emphasisHeaderNum = 2;
 					break;
 				case "release-date":
 					songs = songs.OrderBy(s => {
 						if (s.ReleaseDate != null) return s.ReleaseDate.Value.ToString();
 						else return "";
 					});
+					emphasisHeaderNum = 3;
 					break;
 				default:
 					songs = songs.OrderBy(s => s.Id);
@@ -87,6 +92,7 @@ namespace ABCMusic_Auth.Controllers
 
 			ViewData["paginator"] = paginator;
 			ViewData["searchSettings"] = searchModel;
+			ViewData["emphasisHeaderNum"] = emphasisHeaderNum;
 
 			// send the paginated items to the view
 			return View(paginator.GetItems());

@@ -16,6 +16,7 @@ namespace ABCMusic_Auth.Models
 
 		public int? AlbumId { get; set; }
 
+		[Display(Name = "Track Number")]
 		[Range(0, int.MaxValue, ErrorMessage = "Only non-negative numbers are allowed for track numbers.")]
 		public int? TrackNumber { get; set; }
 		#endregion
