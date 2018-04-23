@@ -1,0 +1,52 @@
+@model ABCMusic_Auth.Models.Album
+
+@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+	ViewData["Title"] = "Delete Album";
+}
+
+<div class="row">
+	<div class="col-md-3"></div>
+	<div class="abc-dialog delete-dialog col-md-6">
+		<div class="row">
+			<h4 id="abc-dialog-title" class="panel-header">ARE YOU SURE?</h4>
+			<p class="middle-align">This action cannot be undone.</p>
+		</div>
+		<div class="row">
+			<div class="form-group">
+				<label asp-for="Name" class="control-label"></label>
+				<p>@Html.DisplayFor(model => model.Name)</p>
+			</div>
+			<div class="form-group">
+				<label asp-for="ArtistName" class="control-label"></label>
+				<p>@Html.DisplayFor(model => model.ArtistName)</p>
+			</div>
+			@*<div class="form-group">
+				<label asp-for="Length" class="control-label"></label>
+				<p>@Html.DisplayFor(model => model.Length)</p>
+			</div>*@
+			<div class="form-group">
+				<label asp-for="ReleaseDate" class="control-label"></label>
+				<p>@Html.DisplayFor(model => model.ReleaseDate)</p>
+			</div>
+			@*<div class="form-group">
+				<label asp-for="TrackNumber" class="control-label"></label>
+				<p>@Html.DisplayFor(model => model.TrackNumber)</p>
+			</div>*@
+			<div class="form-group">
+				<label asp-for="Publisher" class="control-label"></label>
+				<p>@Html.DisplayFor(model => model.Publisher)</p>
+			</div>
+
+			<form asp-action="Delete">
+				<input type="hidden" asp-for="Id" />
+
+				<div class="form-group middle-align">
+					<input type="button" value="Back" class="btn btn-primary" onclick="location.href='@Url.Action("Details", "Albums", new { Model.Id })'" />
+					<input type="submit" value="Delete" class="btn delete-button" />
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="col-md-3"></div>
+</div>

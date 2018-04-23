@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,6 +16,9 @@ namespace ABCMusic_Auth.Models
 		public string LastName { get; set; }
 		public byte Age { get; set; }
 		public string Gender { get; set; }
+
+		[Display(Name = "User Name")]
+		public override string UserName { get; set; }
 		#endregion
 
 		#region NAVIGATION PROPERTIES
@@ -46,7 +50,7 @@ namespace ABCMusic_Auth.Models
 		// 	}
 		// }
 		#endregion
-			
+
 		public string GetName()
 		{
 			// <First Name> <Last Name>

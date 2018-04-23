@@ -1,0 +1,45 @@
+﻿@model ABCMusic_Auth.Models.Review
+
+@{
+	Song song = (Song)ViewBag.Item;
+    ViewData["Title"] = "Create Song Review";
+}
+
+<div class="row">
+	<div class="col-md-3"></div>
+	<div class="abc-dialog create-dialog col-md-6">
+		<div class="row">
+			<h4 id="abc-dialog-title" class="panel-header">NEW REVIEW</h4>
+		</div>
+		<div class="row">
+			<form asp-action="Create">
+				<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+				<input type="hidden" asp-for="ReviewableId" value="@song.Id" />
+				<div class="form-group">
+					<label asp-for="Reviewable.DisplayName" class="control-label">Item</label>
+					<p>@Html.DisplayFor(model => song.DisplayName)</p>
+				</div>
+				<div class="form-group">
+					<label asp-for="Subject" class="control-label"></label>
+					<input asp-for="Subject" class="form-control" />
+					<span asp-validation-for="Subject" class="text-danger"></span>
+				</div>
+				<div class="form-group">
+					<label asp-for="Rating" class="control-label"></label>
+					<input asp-for="Rating" type="range" min="0" max="5" class="form-control" />
+					<span asp-validation-for="Rating" class="text-danger"></span>
+				</div>
+				<div class="form-group">
+					<label asp-for="Content" class="control-label"></label>
+					<textarea asp-for="Content" class="form-control">@Model.Content</textarea>
+					<span asp-validation-for="Content" class="text-danger"></span>
+				</div>
+				<div class="form-group middle-align">
+					<input type="submit" value="Create" class="btn new-button" />
+					<input type="button" value="Cancel" class="btn btn-danger" onclick="location.href='@Url.Action("ReviewsBySong", "Reviews", new { id = song.Id })'" />
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="col-md-3"></div>
+</div>

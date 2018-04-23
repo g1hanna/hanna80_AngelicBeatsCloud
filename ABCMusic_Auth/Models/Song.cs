@@ -24,5 +24,20 @@ namespace ABCMusic_Auth.Models
 		#region NAVIGATION PROPERTIES
 		public Album Album { get; set; }
 		#endregion
+
+		#region METHODS
+		[NotMapped]
+		public override string DisplayName
+		{
+			get {
+				string displayName = $"Song \"{this.Name}\"";
+
+				if (Artist != null) displayName += $" by {this.Artist.UserName}";
+				if (Album != null) displayName += $" from {this.Album.Name}";
+
+				return displayName;
+			}
+		}
+		#endregion
 	}
 }

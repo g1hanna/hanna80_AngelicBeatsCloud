@@ -25,6 +25,7 @@ namespace ABCMusic_Auth.Models
 
 		[Column(TypeName = "date")]
 		[Display(Name = "Release Date")]
+		[DisplayFormat(DataFormatString = "{0:d}", ApplyFormatInEditMode = true)]
 		public virtual DateTime? ReleaseDate { get; set; }
 		#endregion
 
@@ -34,6 +35,12 @@ namespace ABCMusic_Auth.Models
 		public virtual ICollection<ReviewableArtist> Contributors { get; set; }
 
 		public virtual ICollection<Review> Reviews { get; set; }
+		#endregion
+
+		#region METHODS
+		[NotMapped]
+		[Display(Name = "Item Name")]
+		public abstract string DisplayName { get; }
 		#endregion
 	}
 }

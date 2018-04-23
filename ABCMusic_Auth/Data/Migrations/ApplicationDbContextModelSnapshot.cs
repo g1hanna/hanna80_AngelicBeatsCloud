@@ -21,6 +21,19 @@ namespace ABCMusic_Auth.Data.Migrations
                 .HasAnnotation("ProductVersion", "2.0.1-rtm-125")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("ABCMusic_Auth.Models.AdminViewModels.RoleViewModel", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RoleViewModel");
+                });
+
             modelBuilder.Entity("ABCMusic_Auth.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")

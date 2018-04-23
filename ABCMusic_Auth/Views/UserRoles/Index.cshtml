@@ -1,0 +1,38 @@
+
+@model IEnumerable<ABCMusic_Auth.Models.AdminViewModels.RoleViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>User Role Administration</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<table class="table">
+	<tr>
+		<th>
+			@Html.DisplayNameFor(model => model.Name)
+		</th>
+		<th></th>
+	</tr>
+	
+	@foreach (var role in Model)
+	{
+		<tr>
+			<td>
+				@Html.DisplayFor(modelItem => role.Name)
+			</td>
+			<td>
+				<input type="button" class="btn update-button" value="Edit"
+					   onclick="location.href='@Url.Action("Edit", "UserRoles", new { id = role.Id })'" />
+				<input type="button" class="btn btn-primary" value="Details"
+					   onclick="location.href='@Url.Action("Details", "UserRoles", new { id = role.Id })'" />
+				<input type="button" class="btn delete-button" value="Delete"
+					   onclick="location.href='@Url.Action("Delete", "UserRoles", new { id = role.Id })'" />
+			</td>
+		</tr>
+	}
+</table>

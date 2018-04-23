@@ -1,0 +1,41 @@
+﻿@{
+    ViewData["Title"] = "Add Role To User";
+	SelectList roleList = (ViewBag.Roles as SelectList);
+}
+
+<h2>Add Role To User</h2>
+<h3>User Name: @ViewBag.UserName</h3>
+
+@if (ViewBag.ErrorMessage != null)
+{
+	<div class="alert alert-warning">@ViewBag.ErrorMessage</div>
+}
+
+@if (roleList.Count() > 0)
+{
+	<form asp-action="AddRoleToUser" asp-controller="Account">
+		@Html.AntiForgeryToken()
+	
+		<div class="form-group">
+			@*Role Name: @Html.DropDownList("RoleName", ViewBag.Roles as SelectList)*@
+			<label for="roleName">Role Name: </label>
+			<select name="roleName" asp-items="ViewBag.Roles as SelectList"></select>
+		</div>
+
+		@*@Html.Hidden("userName", ViewBag.UserName as string)*@
+		<input type="hidden" name="userName" value="@(ViewBag.UserName as string)" />
+
+		<div class="form-group">
+			<input type="submit" value="Save" class="btn new-button" />
+			<input type="button" value="Cancel" class="btn btn-primary" onclick="location.href='@Url.Action("ViewUsersRoles", "Account",
+				new { userName = ViewBag.UserName as string })'" />
+		</div>
+	</form>
+}
+else
+{
+	<div class="alert alert-info">There are no roles to add to the user.<br />Click the button below to return.</div>
+
+	<input type="button" value="Cancel" class="btn btn-primary" onclick="location.href='@Url.Action("ViewUsersRoles", "Account",
+		new { userName = ViewBag.UserName as string })'" />
+}

@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ABCMusic_Auth.Models;
+using ABCMusic_Auth.Models.AdminViewModels;
+using ABCMusic_Auth;
 
 namespace ABCMusic_Auth.Data
 {
@@ -121,5 +123,11 @@ namespace ABCMusic_Auth.Data
 				.HasIndex(au => au.UserName)
 				.IsUnique(true);
 		}
+
+		public DbSet<ABCMusic_Auth.Models.AdminViewModels.RoleViewModel> RoleViewModel { get; set; }
+
+		public DbSet<ABCMusic_Auth.Models.AdminViewModels.EditUserViewModel> EditUserViewModel { get; set; }
+
+		public DbSet<ABCMusic_Auth.CreateUserViewModel> CreateUserViewModel { get; set; }
 	}
 }

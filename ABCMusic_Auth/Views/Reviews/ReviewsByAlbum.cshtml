@@ -1,0 +1,40 @@
+@model IEnumerable<ABCMusic_Auth.Models.Review>
+
+@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+	ViewData["Title"] = "Album Reviews";
+
+	var item = (Album)ViewBag.Item;
+}
+
+<h2>Reviews for Album <strong>@item.Name</strong></h2>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>@Html.DisplayNameFor((Review modelItem) => modelItem.Subject)</th>
+			<th>@Html.DisplayNameFor((Review modelItem) => modelItem.Rating)</th>
+			<th>@Html.DisplayNameFor((Review modelItem) => modelItem.Author.UserName)</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var review in Model)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => review.Subject)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => review.Rating)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => review.Author.UserName)
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
+
+<a asp-action="UserCreateByAlbum" asp-controller="Reviews" asp-route-id="@item.Id">Add a Review</a>
+<br />
+<a asp-action="Index" asp-controller="Albums">Back to My Albums</a>

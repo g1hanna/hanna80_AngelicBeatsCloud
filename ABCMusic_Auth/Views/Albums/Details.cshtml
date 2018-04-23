@@ -1,0 +1,54 @@
+@model ABCMusic_Auth.Models.Album
+
+@using ABCMusic_Auth.Models.SearchViewModels;
+
+@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+	ViewData["Title"] = "Album Info";
+}
+
+<div class="row">
+	<div class="col-md-3"></div>
+	<div class="abc-dialog view-dialog col-md-6">
+		<div class="row">
+			<h4 id="abc-dialog-title" class="panel-header">ALBUM INFO</h4>
+		</div>
+		<div class="row">
+			<div class="form-group">
+				<label asp-for="Name" class="control-label"></label>
+				<p>@Html.DisplayFor(model => model.Name)</p>
+			</div>
+			<div class="form-group">
+				<label asp-for="ArtistName" class="control-label"></label>
+				<p>@Html.DisplayFor(model => model.ArtistName)</p>
+			</div>
+			@*<div class="form-group">
+				<label asp-for="Length" class="control-label"></label>
+				<p>@Html.DisplayFor(model => model.Length)</p>
+			</div>*@
+			<div class="form-group">
+				<label asp-for="ReleaseDate" class="control-label"></label>
+				<p>@Html.DisplayFor(model => model.ReleaseDate)</p>
+			</div>
+			@*<div class="form-group">
+				<label asp-for="TrackNumber" class="control-label"></label>
+				<p>@Html.DisplayFor(model => model.TrackNumber)</p>
+			</div>*@
+			<div class="form-group">
+				<label asp-for="Publisher" class="control-label"></label>
+				<p>@Html.DisplayFor(model => model.Publisher)</p>
+			</div>
+			<div class="form-group middle-align">
+				<input type="button" value="Back" class="btn btn-primary" onclick="location.href='@Url.Action("Index", "Albums")'" />
+				<input type="button" value="Edit" class="btn update-button" onclick="location.href='@Url.Action("Edit", "Albums", new { Model.Id })'" />
+				<input type="button" value="Delete" class="btn btn-danger" onclick="location.href='@Url.Action("Delete", "Albums", new { Model.Id })'" />
+
+				&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+
+				<input type="button" value="View Songs" class="btn btn-primary" onclick="location.href='@Url.Action("Index", "Songs", new SongSearchViewModel { AlbumId = Model.Id })'" />
+				<input type="button" value="View Reviews" class="btn btn-primary" onclick="location.href='@Url.Action("ReviewsByItem", "Reviews", new { id = Model.Id })'" />
+			</div>
+		</div>
+	</div>
+	<div class="col-md-3"></div>
+</div>

@@ -1,0 +1,44 @@
+@model ABCMusic_Auth.Models.ReviewViewModels.ItemReviewViewModel
+
+@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+	ViewData["Title"] = "Delete Item Review";
+}
+
+<div class="row">
+	<div class="col-md-3"></div>
+	<div class="abc-dialog delete-dialog col-md-6">
+		<div class="row">
+			<h4 id="abc-dialog-title" class="panel-header">ARE YOU SURE?</h4>
+			<p class="middle-align">This action cannot be undone.</p>
+		</div>
+		<div class="row">
+			<div class="form-group">
+				<label asp-for="Subject" class="control-label"></label>
+				<p>@Html.DisplayFor(model => model.Subject)</p>
+			</div>
+			<div class="form-group">
+				<label asp-for="Rating" class="control-label"></label>
+				<p>@Html.DisplayFor(model => model.Rating)</p>
+			</div>
+			<div class="form-group">
+				<label asp-for="Content" class="control-label"></label>
+				<p>@Html.DisplayFor(model => model.Content)</p>
+			</div>
+			<div class="form-group">
+				<label asp-for="ReviewableName" class="control-label"></label>
+				<p>@Html.DisplayFor(model => model.ReviewableName)</p>
+			</div>
+
+			<form asp-action="Delete">
+				<input type="hidden" name="Id" asp-for="Id" />
+
+				<div class="form-group middle-align">
+					<input type="button" value="Back" class="btn btn-primary" onclick="location.href='@Url.Action("Details", "Reviews", new { id = Model.Id })'" />
+					<input type="submit" value="Delete" class="btn delete-button" />
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="col-md-3"></div>
+</div>

@@ -48,7 +48,7 @@
 					<input type="button" value="View Album" class="btn btn-primary" onclick="location.href='@Url.Action("Details", "Albums", new { Model.AlbumId })'" />
 				}
 
-				<input type="button" value="View Reviews" class="btn btn-primary" onclick="location.href='@Url.Action("Index", "Reviews", new { ReviewableId = Model.Id })'" />
+				<input type="button" value="View Reviews" class="btn btn-primary" onclick="location.href='@Url.Action("ReviewsByItem", "Reviews", new { id = Model.Id })'" />
 			</div>
 		</div>
 	</div>

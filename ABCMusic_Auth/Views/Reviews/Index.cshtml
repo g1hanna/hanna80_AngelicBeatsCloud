@@ -1,0 +1,182 @@
+@model IEnumerable<ABCMusic_Auth.Models.ReviewViewModels.ItemReviewViewModel>
+
+@using ABCMusic_Auth.Utilities
+@using ABCMusic_Auth.Models.SearchViewModels;
+@using ABCMusic_Auth.Models.ReviewViewModels;
+
+
+@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+	ViewData["Title"] = "My Reviews";
+
+	//IPaginator<Review> paginator = ViewData["paginator"] as IPaginator<Review>;
+	//ReviewSearchViewModel viewModel = ViewData["searchSettings"] as ReviewSearchViewModel;
+}
+
+<div class="row" id="title-area">
+	<div class="col-md-9">
+		<h2 class="abc-page-title">
+			MY REVIEWS
+		</h2>
+	</div>
+	<div class="col-md-3" id="button-new" onclick="location.href='@Url.Action("Create", "Reviews")'">
+		<p>Create New</p>
+	</div>
+</div>
+
+@*<div class="row abc-panel" id="search-panel">
+		<h3 class="col-md-12 panel-header">SEARCH</h3>
+
+		<form method="post" asp-action="Index" class="row">
+			<input name="AlbumId" type="hidden" value="@viewModel.AlbumId" />
+			<div class="col-md-4">
+				<label for="SearchCriteria">Search Criteria</label><br>
+				<input name="SearchCriteria" type="text" class="abc-form-field" value="@viewModel.SearchCriteria" />
+			</div>
+			<div class="col-md-2">
+				<label for="StartDate">From</label><br>
+				<input name="StartDate" type="date" class="abc-form-field" value="@viewModel.StartDate" />
+			</div>
+			<div class="col-md-2">
+				<label for="EndDate">To</label><br>
+				<input name="EndDate" type="date" class="abc-form-field" value="@viewModel.EndDate" />
+			</div>
+			<div class="col-md-2">
+				<label for="Rating">Rating (0-5)</label><br>
+				<input name="Rating" type="range" class="abc-form-field" min="0" max="5" value="@viewModel.Rating" />
+			</div>
+			<div class="row col-md-2">
+				<br />
+				<input type="submit" value="Search" class="btn btn-primary" />
+				<input type="reset" value="Reset" class="btn btn-primary" onclick="location.href='@Url.Action("Index", "Songs")'" />
+			</div>
+		</form>
+	</div>*@
+
+<div class="row abc-panel" id="results-panel">
+	<h3 class="col-md-12 panel-header">RESULTS</h3>
+
+	<table class="table">
+		<thead>
+			<tr class="abc-header-row">
+				<th>
+					@Html.DisplayNameFor(model => model.Subject)
+				</th>
+				<th>
+					@Html.DisplayNameFor(model => model.Rating)
+				</th>
+				<th>
+					@Html.DisplayNameFor((ItemReviewViewModel modelItem) => modelItem.AuthorUserName)
+				</th>
+				<th>
+					@Html.DisplayNameFor((ItemReviewViewModel modelItem) => modelItem.ReviewableName)
+				</th>
+				<th class="right-align">
+					@*<input type="reset"
+						value="Reverse"
+						class="btn btn-primary"
+						onclick="location.href='@Url.Action("Index", "Songs", new SongSearchViewModel
+						 {
+							 EndDate = viewModel.EndDate,
+							 FlipOrder = !viewModel.FlipOrder,
+							 PageNumber = 1,
+							 PageSize = paginator.ItemsPerPage,
+							 SearchCriteria = viewModel.SearchCriteria,
+							 SortOrder = viewModel.SortOrder,
+							 StartDate = viewModel.StartDate,
+							 Rating = viewModel.Rating,
+							 AlbumId = viewModel.AlbumId
+						 })'" />*@
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (ItemReviewViewModel review in Model)
+			{
+				<tr class="abc-item-row abc-song">
+					<td>
+						@Html.DisplayFor(modelItem => review.Subject)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => review.Rating)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => review.AuthorUserName)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => review.ReviewableName)
+					</td>
+					<td class="right-align">
+						<input type="button" value="Edit" class="btn update-button" onclick="location.href='@Url.Action("Edit", "Reviews", new { id = review.Id })'" />
+						<input type="button" value="View" class="btn btn-primary" onclick="location.href='@Url.Action("Details", "Reviews", new { id = review.Id })'" />
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+
+	@*<div class="row">
+			<div class="col-md-12">
+				@Html.Raw(paginator.RenderPaginatorNav(page => Url.Action("Index",
+					new SongSearchViewModel
+					{
+						EndDate = viewModel.EndDate,
+						FlipOrder = viewModel.FlipOrder,
+						PageNumber = page,
+						PageSize = paginator.ItemsPerPage,
+						SearchCriteria = viewModel.SearchCriteria,
+						SortOrder = viewModel.SortOrder,
+						StartDate = viewModel.StartDate,
+						Rating = viewModel.Rating,
+						AlbumId = viewModel.AlbumId
+					})))
+			</div>
+		</div>*@
+</div>
+
+@*<script>
+		var emphasis = @ViewData["emphasisHeaderNum"];
+		if ((emphasis) != null) {
+			if (emphasis >= 0 && emphasis <= 3) {
+				document.getElementsByClassName("abc-header-row")[0]
+					.getElementsByTagName("th")[emphasis]
+					.style.fontSize = "18px";
+			}
+		}
+	</script>*@
+
+@*<h2>Reviews for Song <strong>@item.Name</strong></h2>
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th>@Html.DisplayNameFor((Review modelItem) => modelItem.Subject)</th>
+				<th>@Html.DisplayNameFor((Review modelItem) => modelItem.Rating)</th>
+				<th>@Html.DisplayNameFor((Review modelItem) => modelItem.Author.UserName)</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var review in Model)
+			{
+				<tr>
+					<td>
+						@Html.DisplayFor(modelItem => review.Subject)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => review.Rating)
+					</td>
+					<td>
+						@Html.DisplayFor(modelItem => review.Author.UserName)
+					</td>
+					<td>
+						<input type="button" class="btn btn-" value="" />
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+
+	<a asp-action="UserCreateBySong" asp-controller="Reviews" asp-route-id="@item.Id">Add a Review</a>
+	<br />
+	<a asp-action="Index" asp-controller="Songs">Back to My Albums</a>*@

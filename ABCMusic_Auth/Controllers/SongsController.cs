@@ -9,23 +9,56 @@ using ABCMusic_Auth.Data;
 using ABCMusic_Auth.Models;
 using ABCMusic_Auth.Models.SearchViewModels;
 using ABCMusic_Auth.Utilities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ABCMusic_Auth.Controllers
 {
+	[Authorize]
 	public class SongsController : Controller
 	{
 		private readonly AngelicBeatsDbContext _context;
+		private readonly UserManager<ApplicationUser> _userManager;
 
-		public SongsController(AngelicBeatsDbContext context)
+		public SongsController(AngelicBeatsDbContext context, UserManager<ApplicationUser> userManager)
 		{
+			if (context == null) throw new Exception("Null database context supplied.");
+			if (userManager == null) throw new Exception("Null user manager supplied.");
+
 			_context = context;
+			_userManager = userManager;
 		}
 
 		// GET: Songs
 		public async Task<IActionResult> Index(SongSearchViewModel searchModel)
 		{
 			int? emphasisHeaderNum = null;
-			IEnumerable<Song> songs = await _context.Songs.ToListAsync();
+
+			// load songs and related albums
+			IEnumerable<Song> songs = await _context.Songs
+				.Include(s => s.Album)
+				.ToListAsync();
+
+			// get current user
+			ApplicationUser currentUser = await _userManager.FindByNameAsync(User.Identity.Name);
+
+			if (currentUser == null)
+			{
+				throw new Exception("No current user.");
+			}
+
+			// filter by current owner
+			songs = songs.Where(s => s.ArtistId == currentUser.Id);
+
+			// if album supplied, filter by that album
+			if (searchModel.AlbumId != null)
+			{
+				Album album = _context.Albums.FirstOrDefault(a => a.Id == searchModel.AlbumId);
+
+				if (album == null) throw new Exception("That album doesn't exist.");
+
+				songs = songs.Where(s => s.AlbumId == album.Id);
+			}
 
 			// search criteria
 			if (!string.IsNullOrWhiteSpace(searchModel.SearchCriteria))
@@ -131,6 +164,11 @@ namespace ABCMusic_Auth.Controllers
 		{
 			if (ModelState.IsValid)
 			{
+				ApplicationUser currentUser = await _userManager.FindByNameAsync(User.Identity.Name);
+
+				song.ArtistId = currentUser.Id;
+				song.Artist = currentUser;
+
 				_context.Add(song);
 				await _context.SaveChangesAsync();
 				return RedirectToAction(nameof(Index));
@@ -170,6 +208,11 @@ namespace ABCMusic_Auth.Controllers
 			{
 				try
 				{
+					ApplicationUser user = await _userManager.FindByNameAsync(User.Identity.Name);
+
+					song.ArtistId = user.Id;
+					song.Artist = user;
+
 					_context.Update(song);
 					await _context.SaveChangesAsync();
 				}
@@ -184,7 +227,7 @@ namespace ABCMusic_Auth.Controllers
 						throw;
 					}
 				}
-				return RedirectToAction(nameof(Index));
+				return RedirectToAction(nameof(Details), new { id = id });
 			}
 			return View(song);
 		}

@@ -10,11 +10,12 @@
 	SongSearchViewModel viewModel = ViewData["searchSettings"] as SongSearchViewModel;
 }
 
-<!DOCTYPE html>
-
 <div class="row" id="title-area">
 	<div class="col-md-9">
-		<h2 class="abc-page-title">MY SONGS</h2>
+		<h2 class="abc-page-title">
+			MY SONGS |
+			<a asp-action="Index" asp-controller="Albums" class="abc-title-link">MY ALBUMS</a>
+		</h2>
 	</div>
 	<div class="col-md-3" id="button-new" onclick="location.href='@Url.Action("Create", "Songs")'">
 		<p>Create New</p>
@@ -25,6 +26,7 @@
 	<h3 class="col-md-12 panel-header">SEARCH</h3>
 
 	<form method="post" asp-action="Index" class="row">
+		<input name="AlbumId" type="hidden" value="@viewModel.AlbumId" />
 		<div class="col-md-4">
 			<label for="SearchCriteria" >Search Criteria</label><br>
 			<input name="SearchCriteria" type="text" class="abc-form-field" value="@viewModel.SearchCriteria" />
@@ -66,7 +68,8 @@
 							SearchCriteria = viewModel.SearchCriteria,
 							SortOrder = "song-name",
 							StartDate = viewModel.StartDate,
-							Rating = viewModel.Rating
+							Rating = viewModel.Rating,
+							AlbumId = viewModel.AlbumId
 						}) 
 				</th>
 				<th>
@@ -81,7 +84,8 @@
 							SearchCriteria = viewModel.SearchCriteria,
 							SortOrder = "artist",
 							StartDate = viewModel.StartDate,
-							Rating = viewModel.Rating
+							Rating = viewModel.Rating,
+							AlbumId = viewModel.AlbumId
 						})
 				</th>
 				<th>
@@ -95,7 +99,8 @@
 							SearchCriteria = viewModel.SearchCriteria,
 							SortOrder = "album-name",
 							StartDate = viewModel.StartDate,
-							Rating = viewModel.Rating
+							Rating = viewModel.Rating,
+							AlbumId = viewModel.AlbumId
 						})
 				</th>
 				@*<th>
@@ -115,7 +120,8 @@
 							SearchCriteria = viewModel.SearchCriteria,
 							SortOrder = "release-date",
 							StartDate = viewModel.StartDate,
-							Rating = viewModel.Rating
+							Rating = viewModel.Rating,
+							AlbumId = viewModel.AlbumId
 						})
 				</th>
 				@*<th>
@@ -135,7 +141,8 @@
 								SearchCriteria = viewModel.SearchCriteria,
 								SortOrder = viewModel.SortOrder,
 								StartDate = viewModel.StartDate,
-								Rating = viewModel.Rating
+								Rating = viewModel.Rating,
+								AlbumId = viewModel.AlbumId
 							})'"
 					/>
 				</th>
@@ -177,6 +184,7 @@
 				<td class="right-align">
 					<input type="button" value="Edit" class="btn update-button" onclick="location.href='@Url.Action("Edit", "Songs", new { item.Id })'" />
 					<input type="button" value="View" class="btn btn-primary" onclick="location.href='@Url.Action("Details", "Songs", new { item.Id })'" />
+					<input type="button" value="Reviews" class="btn btn-primary" onclick="location.href='@Url.Action("ReviewsBySong", "Reviews", new { id = item.Id })'" />
 				</td>
 			</tr>
 	}
@@ -187,7 +195,9 @@
 		<div class="col-md-12">
 			@Html.Raw(paginator.RenderPaginatorNav(page => Url.Action("Index",
 				new SongSearchViewModel { EndDate = viewModel.EndDate, FlipOrder = viewModel.FlipOrder, PageNumber = page, PageSize = paginator.ItemsPerPage,
-				SearchCriteria = viewModel.SearchCriteria, SortOrder = viewModel.SortOrder, StartDate = viewModel.StartDate, Rating = viewModel.Rating })))
+					SearchCriteria = viewModel.SearchCriteria, SortOrder = viewModel.SortOrder, StartDate = viewModel.StartDate, Rating = viewModel.Rating,
+					AlbumId = viewModel.AlbumId
+				})))
 		</div>
 	</div>
 </div>

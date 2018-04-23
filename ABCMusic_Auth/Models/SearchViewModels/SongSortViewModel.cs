@@ -23,5 +23,7 @@ namespace ABCMusic_Auth.Models.SearchViewModels
 		public string SearchCriteria { get; set; }
 
 		public byte Rating { get; set; }
+
+		public int? AlbumId { get; set; }
     }
 }

@@ -1,0 +1,43 @@
+﻿@model ABCMusic_Auth.Models.ReviewViewModels.ItemReviewViewModel
+
+@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+	ViewData["Title"] = "Item Review Details";
+}
+
+<div class="row">
+	<div class="col-md-3"></div>
+	<div class="abc-dialog view-dialog col-md-6">
+		<div class="row">
+			<h4 id="abc-dialog-title" class="panel-header">REVIEW INFO</h4>
+		</div>
+		<div class="row">
+			<div class="form-group">
+				<label asp-for="Subject" class="control-label"></label>
+				<p>@Html.DisplayFor(model => model.Subject)</p>
+			</div>
+			<div class="form-group">
+				<label asp-for="Rating" class="control-label"></label>
+				<p>@Html.DisplayFor(model => model.Rating)</p>
+			</div>
+			<div class="form-group">
+				<label asp-for="Content" class="control-label"></label>
+				<p>@Html.DisplayFor(model => model.AuthorUserName)</p>
+			</div>
+			<div class="form-group">
+				<label asp-for="Content" class="control-label"></label>
+				<p>@Html.DisplayFor(model => model.Content)</p>
+			</div>
+			@*<div class="form-group">
+				<label asp-for="ReviewableName" class="control-label"></label>
+				<p>@Html.DisplayFor(model => model.ReviewableName)</p>
+			</div>*@
+			<div class="form-group middle-align">
+				<input type="button" value="Back" class="btn btn-primary" onclick="location.href='@Url.Action("Index", "Reviews")'" />
+				<input type="button" value="Edit" class="btn update-button" onclick="location.href='@Url.Action("Edit", "Reviews", new { id = Model.Id })'" />
+				<input type="button" value="Delete" class="btn btn-danger" onclick="location.href='@Url.Action("Delete", "Reviews", new { id = Model.Id })'" />
+			</div>
+		</div>
+	</div>
+	<div class="col-md-3"></div>
+</div>

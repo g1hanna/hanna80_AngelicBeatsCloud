@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using ABCMusic_Auth.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ABCMusic_Auth.Controllers
 {
@@ -32,6 +33,12 @@ namespace ABCMusic_Auth.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        //[Authorize(Roles = "Admin")]
+        public IActionResult Admin()
+        {
+            return View();
         }
     }
 }

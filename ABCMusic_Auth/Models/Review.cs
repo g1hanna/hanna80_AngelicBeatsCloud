@@ -22,9 +22,11 @@ namespace ABCMusic_Auth.Models
 		[DataType("NVARCHAR(MAX)")]
 		public string Content { get; set; }
 
+		[Display(Name = "Reviewable")]
 		public int ReviewableId { get; set; }
 
 		[DataType("NVARCHAR(128)")]
+		[Display(Name = "Author")]
 		public string AuthorId { get; set; }
 		#endregion
 

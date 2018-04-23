@@ -1,51 +1,51 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Angelic Beats Cloud Music</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>@ViewData["Title"] - Angelic Beats Cloud Music</title>
 
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+	<link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
 	<img src="/images/Sunrise.jpg" id="background-img" alt=" ">
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Angelic Beats Cloud Music</a>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    @*<li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>*@
-                    <li><a asp-area="" asp-controller="Songs" asp-action="Index">My Songs</a></li>
-                    <li><a asp-area="" asp-controller="Albums" asp-action="Index">My Albums</a></li>
-                    <li><a asp-area="" asp-controller="Reviews" asp-action="Index">My Reviews</a></li>
-                </ul>
-                @await Html.PartialAsync("_LoginPartial")
-            </div>
-        </div>
-    </nav>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; 2018 - Angelic Beats Cloud Music</p>
-        </footer>
-    </div>
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Angelic Beats Cloud Music</a>
+			</div>
+			<div class="navbar-collapse collapse">
+				<ul class="nav navbar-nav">
+					@*<li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+					<li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
+					<li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>*@
+					<li><a asp-area="" asp-controller="Songs" asp-action="Index">My Songs</a></li>
+					<li><a asp-area="" asp-controller="Albums" asp-action="Index">My Albums</a></li>
+					<li><a asp-area="" asp-controller="Reviews" asp-action="Index">My Reviews</a></li>
+				</ul>
+				@await Html.PartialAsync("_LoginPartial")
+			</div>
+		</div>
+	</nav>
+	<div class="container body-content">
+		@RenderBody()
+	</div>
+	<footer id="page-footer" class="abc-dialog view-dialog col-md-6">
+		@await Html.PartialAsync("_RegistrationPartial")
+		<p>&copy; 2018 - Angelic Beats Cloud Music</p>
+	</footer>
 
-    <script src="~/lib/jquery/dist/jquery.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    
-    @RenderSection("Scripts", required: false)
+	<script src="~/lib/jquery/dist/jquery.js"></script>
+	<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+	<script src="~/js/site.js" asp-append-version="true"></script>
+	
+	@RenderSection("Scripts", required: false)
 </body>
 </html>

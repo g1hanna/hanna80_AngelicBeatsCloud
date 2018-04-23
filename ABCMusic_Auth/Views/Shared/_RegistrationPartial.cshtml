@@ -1,0 +1,18 @@
+@if (ViewData["Title"] == "Register" || ViewData["Title"] == "Log in")
+{
+<div>
+	@if (ViewData["Title"] == "Register") {
+		<p>
+			Already have an account&#63;<br>
+			<a asp-action="Login" class="action-link">Log In&#33;</a>
+		</p>
+	}
+	@if (ViewData["Title"] == "Log in") {
+		<p>
+			Don&quot;t have an account&#63;,<br>
+			<a asp-action="Register" class="action-link">Register&#33;</a>
+		</p>
+	}
+</div>
+<hr>
+}
