@@ -523,8 +523,21 @@ namespace ABCMusic_Auth.Controllers
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		[ActionName("Create")]
-		public async Task<IActionResult> CreateAsync([Bind("UserName,LastName,FirstName,Email")] CreateUserViewModel user)
+		//[Authorize(Roles = "Admin")]
+		public async Task<IActionResult> CreateAsync([Bind("UserName,LastName,FirstName,Email,Password,ConfirmPassword,Age,Gender")] CreateUserViewModel user)
 		{
+			string userName = User.Identity.Name;
+			if (userName == null) { return StatusCode(400); }
+
+			// // validate user's authority to create user
+			// // only admin allowed
+			// ApplicationUser currentUser = await _userManager.FindByNameAsync(userName);
+			// if (await _userManager.IsInRoleAsync(currentUser, "Admin")) {}
+			// else
+			// {
+			// 	return RedirectToAction("AccessDenied", "Error");
+			// }
+
 			if (ModelState.IsValid)
 			{
 				var newUser = new ApplicationUser()
@@ -532,22 +545,29 @@ namespace ABCMusic_Auth.Controllers
 					UserName = user.UserName,
 					FirstName = user.FirstName,
 					LastName = user.LastName,
-					Email = user.Email
-					// TODO: Assign age here
+					Email = user.Email,
+					Age = user.Age,
+					Gender = user.Gender
 				};
 
-				await _userManager.CreateAsync(newUser);
-				await _dataContext.SaveChangesAsync();
-				return RedirectToAction("Index");
+				var result = await _userManager.CreateAsync(newUser);
+				if (result.Succeeded)
+				{
+					PasswordHasher<ApplicationUser> ph = new PasswordHasher<ApplicationUser>();
+					newUser.PasswordHash = ph.HashPassword(newUser, user.Password);
+					await _dataContext.SaveChangesAsync();
+					return RedirectToAction("Index");
+				}
+
+				AddErrors(result);
 			}
-			else
-			{
-				return View(user);
-			}
+			
+			return View(user);
 		}
 
 		[HttpGet]
 		[ActionName("Edit")]
+		//[Authorize(Roles = "Admin")]
 		public async Task<IActionResult> EditAsync(string userName = null)
 		{
 			if (userName == null)
@@ -569,28 +589,39 @@ namespace ABCMusic_Auth.Controllers
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		[ActionName("Edit")]
-		public async Task<IActionResult> EditAsync([Bind("UserName, LastName, FirstName, Email")] EditUserViewModel userModel)
+		//[Authorize(Roles = "Admin")]
+		public async Task<IActionResult> EditAsync([Bind("UserName,LastName,FirstName,Email,Password,ConfirmPassword,Age,Gender")] EditUserViewModel userModel)
 		{
 			if (ModelState.IsValid)
 			{
 				ApplicationUser user = await _userManager.FindByNameAsync(userModel.UserName);
 
-				user.FirstName = userModel.FirstName;
-				user.LastName = userModel.LastName;
-				user.Email = userModel.Email;
+				if (user != null)
+				{
+					user.FirstName = userModel.FirstName;
+					user.LastName = userModel.LastName;
+					user.Email = userModel.Email;
+					user.Age = userModel.Age;
+					user.Gender = userModel.Gender;
+
+					if (userModel.Password != null)
+					{
+						PasswordHasher<ApplicationUser> ph = new PasswordHasher<ApplicationUser>();
+						user.PasswordHash = ph.HashPassword(user, userModel.Password);
+					}
+				}
 
 				await _userManager.UpdateAsync(user);
 				await _dataContext.SaveChangesAsync();
 				return RedirectToAction("Index");
 			}
-			else
-			{
-				return View(userModel);
-			}
+
+			return View(userModel);
 		}
 
 		[HttpGet]
 		[ActionName("Delete")]
+		//[Authorize(Roles = "Admin")]
 		public async Task<IActionResult> DeleteAsync(string userName = null)
 		{
 			if (userName == null)
@@ -599,11 +630,13 @@ namespace ABCMusic_Auth.Controllers
 			}
 
 			ApplicationUser user = await _userManager.FindByNameAsync(userName);
-
 			if (user == null)
 			{
 				return NotFound();
 			}
+
+			bool isCurrentUser = user.UserName == User.Identity.Name;
+			ViewBag.IsCurrentUser = isCurrentUser;
 
 			var model = new EditUserViewModel(user);
 			return View(model);
@@ -612,12 +645,78 @@ namespace ABCMusic_Auth.Controllers
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		[ActionName("Delete")]
+		//[Authorize(Roles = "Admin")]
 		public async Task<IActionResult> DeleteConfirmedAsync(string userName)
 		{
-			ApplicationUser user = await _userManager.FindByNameAsync(userName);
+			//ApplicationUser user = await _userManager.FindByNameAsync(userName);
+			ApplicationUser user = await _dataContext.Users
+				.Include(u => u.Reviews)
+				.Include(u => u.Reviewables)
+				.FirstOrDefaultAsync(u => u.UserName == userName);
 
 			// remove user from roles
 			await _userManager.RemoveFromRolesAsync(user, _roleManager.Roles.Select(r => r.Name));
+
+			// remove user's songs, albums, and reviews
+			if (user.Reviews.Count > 0) {
+				_dataContext.Reviews.RemoveRange(user.Reviews);
+				await _dataContext.SaveChangesAsync();
+			}
+
+			// remove reviewables
+			if (user.Reviewables.Count > 0) {
+				// load songs in separate collection
+				ICollection<Song> songs = new List<Song>();
+				foreach (Reviewable r2 in user.Reviewables.Where(r => r is Song))
+					songs.Add(await _dataContext.Songs
+						.Include(_ => _.Album)
+						.Include(_ => _.Reviews)
+						.FirstOrDefaultAsync(_ => _.Id == r2.Id));
+
+				// handle songs and related data
+				foreach (Song s in songs)
+				{
+					// remove reviews
+					// TODO: Implement model and detach reviews
+					if (s.Reviews.Count > 0) {
+						_dataContext.Reviews.RemoveRange(s.Reviews);
+					}
+
+					// remove song
+					_dataContext.Songs.Remove(s);
+				}
+				await _dataContext.SaveChangesAsync();
+
+				// load albums in separate collection
+				ICollection<Album> albums = new List<Album>();
+				foreach (Reviewable r1 in user.Reviewables.Where(r => r is Album))
+					albums.Add(await _dataContext.Albums
+						.Include(_ => _.Songs)
+						.Include(_ => _.Reviews)
+						.FirstOrDefaultAsync(_ => _.Id == r1.Id));
+
+				// handle albums and related data
+				foreach (Album a in albums)
+				{
+					// remove reviews
+					// TODO: Implement model and detach reviews
+					if (a.Reviews.Count > 0) {
+						_dataContext.Reviews.RemoveRange(a.Reviews);
+						//await _dataContext.SaveChangesAsync();
+					}
+					
+					// detach songs
+					if (a.Songs.Count > 0) {
+						foreach (Song item in a.Songs) { item.AlbumId = null; item.Album = null; }
+						_dataContext.Songs.UpdateRange(a.Songs);
+						//await _dataContext.SaveChangesAsync();
+					}
+
+					// remove album
+					_dataContext.Albums.Remove(a);
+				}
+				await _dataContext.SaveChangesAsync();
+			}
 
 			// remove user via user manager
 			await _userManager.DeleteAsync(user);
@@ -627,8 +726,9 @@ namespace ABCMusic_Auth.Controllers
 		#endregion
 
 		#region USER ROLE MANAGEMENT
-
-		public async Task<ActionResult> ViewUsersRoles(string userName = null)
+		[ActionName("ViewUsersRoles")]
+		//[Authorize(Roles = "Admin")]
+		public async Task<ActionResult> ViewUsersRolesAsync(string userName = null)
 		{
 			if (!string.IsNullOrWhiteSpace(userName))
 			{
@@ -663,7 +763,9 @@ namespace ABCMusic_Auth.Controllers
 			return View();
 		}
 
-		public async Task<ActionResult> AddRoleToUser(string userName = null)
+		[ActionName("AddRoleToUser")]
+		//[Authorize(Roles = "Admin")]
+		public async Task<ActionResult> AddRoleToUserAsync(string userName = null)
 		{
 			List<string> roles;
 
@@ -693,7 +795,9 @@ namespace ABCMusic_Auth.Controllers
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<ActionResult> AddRoleToUser(string roleName, string userName)
+		[ActionName("AddRoleToUser")]
+		//[Authorize(Roles = "Admin")]
+		public async Task<ActionResult> AddRoleToUserAsync(string roleName, string userName)
 		{
 			List<string> roles;
 
@@ -747,8 +851,9 @@ namespace ABCMusic_Auth.Controllers
 			}
 		}
 
-
-		public async Task<ActionResult> DeleteRoleForUser(string userName = null, string roleName = null)
+		[ActionName("DeleteRoleForUserAsync")]
+		//[Authorize(Roles = "Admin")]
+		public async Task<ActionResult> DeleteRoleForUserAsync(string userName = null, string roleName = null)
 		{
 			if ((!string.IsNullOrWhiteSpace(userName)) || (!string.IsNullOrWhiteSpace(roleName)))
 			{

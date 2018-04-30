@@ -28,9 +28,11 @@ namespace ABCMusic_Auth
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
+			// Database context to Azure
 			services.AddDbContext<AngelicBeatsDbContext>(options =>
 				options.UseSqlServer(Configuration.GetConnectionString("ABCMusic_Online")));
 
+			// Identity framework context
 			services.AddIdentity<ApplicationUser, IdentityRole>()
 				.AddEntityFrameworkStores<AngelicBeatsDbContext>()
 				.AddDefaultTokenProviders();
@@ -42,9 +44,9 @@ namespace ABCMusic_Auth
 
 			// enforce https addresses only
 			// see: https://docs.microsoft.com/en-us/aspnet/core/security/enforcing-ssl?view=aspnetcore-2.1
-			// services.Configure<MvcOptions>(options => {
-			// 	options.Filters.Add(new RequireHttpsAttribute());
-			// });
+			services.Configure<MvcOptions>(options => {
+				options.Filters.Add(new RequireHttpsAttribute());
+			});
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -74,8 +76,8 @@ namespace ABCMusic_Auth
 
 			// redirect to https address
 			// see: https://docs.microsoft.com/en-us/aspnet/core/security/enforcing-ssl?view=aspnetcore-2.1
-			// var options = new RewriteOptions().AddRedirectToHttps();
-			// app.UseRewriter(options);
+			var options = new RewriteOptions().AddRedirectToHttps();
+			app.UseRewriter(options);
 		}
 	}
 }

@@ -135,6 +135,12 @@ namespace ABCMusic_Auth.Controllers
 				return NotFound();
 			}
 
+			ApplicationUser currentUser = await _userManager.FindByNameAsync(User.Identity.Name);
+			if (currentUser == null)
+			{
+				return StatusCode(400);
+			}
+
 			var review = await _context.Reviews
 				.Include(r => r.Author)
 				.Include(r => r.Reviewable)
@@ -142,6 +148,14 @@ namespace ABCMusic_Auth.Controllers
 			if (review == null)
 			{
 				return NotFound();
+			}
+
+			// Allow creator and Admin, but block out other users
+			if (await _userManager.IsInRoleAsync(currentUser, "Admin")) {}
+			else if (review.Author.UserName == User.Identity.Name) {}
+			else
+			{
+				return RedirectToAction("AccessDenied", "Error");
 			}
 			
 			//ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id", review.AuthorId);

@@ -6,7 +6,17 @@
 
 <h2>Delete</h2>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>Are you sure you want to delete this user?</h3>
+@if ((bool)ViewBag.IsCurrentUser)
+{
+<p class="alert alert-danger">DANGER - You want to delete the current user.
+	This action will sign you out of the application and remove all your songs, albums, and reviews.</p>
+}
+else
+{
+<p class="alert alert-danger">This action will delete this user's songs, albums, and reviews.</p>
+}
+
 <div>
     <dl class="dl-horizontal">
         <dt>

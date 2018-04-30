@@ -140,7 +140,11 @@ namespace ABCMusic_Auth.Controllers
 			}
 
 			var song = await _context.Songs
+				.Include(s => s.Album)
+				.Include(s => s.Album.Artist)
+				.Include(s => s.Artist)
 				.FirstOrDefaultAsync(m => m.Id == id);
+				
 			if (song == null)
 			{
 				return NotFound();
@@ -150,8 +154,13 @@ namespace ABCMusic_Auth.Controllers
 		}
 
 		// GET: Songs/Create
-		public IActionResult Create()
+		[ActionName("Create")]
+		public async Task<IActionResult> CreateAsync()
 		{
+			ApplicationUser currentUser = await _userManager.FindByNameAsync(User.Identity.Name);
+
+			ViewData["AlbumId"] = (IEnumerable<SelectListItem>)BuildUserAlbumsDropDownList(currentUser);
+
 			return View();
 		}
 
@@ -160,12 +169,12 @@ namespace ABCMusic_Auth.Controllers
 		// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Create([Bind("Name,ArtistName,Length,ReleaseDate,TrackNumber,Publisher")] Song song)
+		public async Task<IActionResult> Create([Bind("Name,ArtistName,Length,ReleaseDate,TrackNumber,Publisher,AlbumId")] Song song)
 		{
+			ApplicationUser currentUser = await _userManager.FindByNameAsync(User.Identity.Name);
+
 			if (ModelState.IsValid)
 			{
-				ApplicationUser currentUser = await _userManager.FindByNameAsync(User.Identity.Name);
-
 				song.ArtistId = currentUser.Id;
 				song.Artist = currentUser;
 
@@ -173,12 +182,16 @@ namespace ABCMusic_Auth.Controllers
 				await _context.SaveChangesAsync();
 				return RedirectToAction(nameof(Index));
 			}
+
+			ViewData["AlbumId"] = (IEnumerable<SelectListItem>)BuildUserAlbumsDropDownList(currentUser);
 			return View(song);
 		}
 
 		// GET: Songs/Edit/5
 		public async Task<IActionResult> Edit(int? id)
 		{
+			ApplicationUser currentUser = await _userManager.FindByNameAsync(User.Identity.Name);
+
 			if (id == null)
 			{
 				return NotFound();
@@ -189,6 +202,8 @@ namespace ABCMusic_Auth.Controllers
 			{
 				return NotFound();
 			}
+
+			ViewData["AlbumId"] = (IEnumerable<SelectListItem>)BuildUserAlbumsDropDownList(currentUser);
 			return View(song);
 		}
 
@@ -197,8 +212,10 @@ namespace ABCMusic_Auth.Controllers
 		// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Edit(int id, [Bind("Id,Name,ArtistName,Length,ReleaseDate,TrackNumber,Publisher")] Song song)
+		public async Task<IActionResult> Edit(int id, [Bind("Id,Name,ArtistName,Length,ReleaseDate,TrackNumber,Publisher,AlbumId")] Song song)
 		{
+			ApplicationUser currentUser = await _userManager.FindByNameAsync(User.Identity.Name);
+
 			if (id != song.Id)
 			{
 				return NotFound();
@@ -208,10 +225,10 @@ namespace ABCMusic_Auth.Controllers
 			{
 				try
 				{
-					ApplicationUser user = await _userManager.FindByNameAsync(User.Identity.Name);
+					//ApplicationUser user = await _userManager.FindByNameAsync(User.Identity.Name);
 
-					song.ArtistId = user.Id;
-					song.Artist = user;
+					song.ArtistId = currentUser.Id;
+					song.Artist = currentUser;
 
 					_context.Update(song);
 					await _context.SaveChangesAsync();
@@ -229,6 +246,8 @@ namespace ABCMusic_Auth.Controllers
 				}
 				return RedirectToAction(nameof(Details), new { id = id });
 			}
+
+			ViewData["AlbumId"] = (IEnumerable<SelectListItem>)BuildUserAlbumsDropDownList(currentUser);
 			return View(song);
 		}
 
@@ -255,15 +274,77 @@ namespace ABCMusic_Auth.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> DeleteConfirmed(int id)
 		{
-			var song = await _context.Songs.FirstOrDefaultAsync(m => m.Id == id);
+			var song = await _context.Songs
+				.Include(_ => _.Reviews)
+				.FirstOrDefaultAsync(m => m.Id == id);
+
+			// remove reviews
+			// TODO: Update to detach reviews
+			if (song.Reviews.Count > 0) {
+				_context.Reviews.RemoveRange(song.Reviews);
+				await _context.SaveChangesAsync();
+			}
+
+			// remove song
 			_context.Songs.Remove(song);
 			await _context.SaveChangesAsync();
+
 			return RedirectToAction(nameof(Index));
 		}
 
 		private bool SongExists(int id)
 		{
 			return _context.Songs.Any(e => e.Id == id);
+		}
+
+		[NonAction]
+		private List<SelectListItem> BuildAlbumsDropDownList()
+		{
+			return BuildAlbumsDropDownList(
+				// load albums, songs, and their related data
+				_context.Albums
+					.Include(a => a.Artist)
+					.ToList());
+		}
+
+		[NonAction]
+		private List<SelectListItem> BuildUserAlbumsDropDownList(ApplicationUser user)
+		{
+			return BuildAlbumsDropDownList(
+				// load albums, songs, and their related data
+				// ensure albums belong to specified user
+				_context.Albums
+					.Where(a => a.ArtistId == user.Id)
+					.Include(a => a.Artist)
+					.ToList());
+		}
+
+		[NonAction]
+		private List<SelectListItem> BuildAlbumsDropDownList(IEnumerable<Album> albums)
+		{
+			// drop down list for reviewables
+			var reviewableSelectList = new List<SelectListItem>();
+			
+			// add a blank item
+			reviewableSelectList.Add(new SelectListItem() {
+				Selected = true,
+				Text = "None",
+				Value = ""
+			});
+
+			// convert albums into select items
+			//var albums = _context.Albums.ToList();
+			foreach (var album in albums)
+			{
+				string reviewableString = $"Album \"{album.Name}\"";
+				if (album.Artist != null) reviewableString +=  $" by {album.Artist.UserName}";
+
+				reviewableSelectList.Add(new SelectListItem() {
+					Text = reviewableString, Value = album.Id.ToString()
+				});
+			}
+
+			return reviewableSelectList;
 		}
 	}
 }

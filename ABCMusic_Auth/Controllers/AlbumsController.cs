@@ -252,9 +252,28 @@ namespace ABCMusic_Auth.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> DeleteConfirmed(int id)
 		{
-			var album = await _context.Albums.FirstOrDefaultAsync(m => m.Id == id);
+			var album = await _context.Albums
+				.Include(_ => _.Songs)
+				.FirstOrDefaultAsync(m => m.Id == id);
+
+			// remove reviews
+			// TODO: Update to detach reviews
+			if (album.Reviews.Count > 0) {
+				_context.RemoveRange(album.Reviews);
+				await _context.SaveChangesAsync();
+			}
+
+			// detach songs from album
+			if (album.Songs.Count > 0) {
+				foreach (Song s in album.Songs) { s.AlbumId = null; s.Album = null; }
+				_context.Songs.UpdateRange(album.Songs);
+				await _context.SaveChangesAsync();
+			}
+
+			// remove album
 			_context.Albums.Remove(album);
 			await _context.SaveChangesAsync();
+
 			return RedirectToAction(nameof(Index));
 		}
 

@@ -14,6 +14,7 @@ namespace ABCMusic_Auth.Models
 
 		public string Publisher { get; set; }
 
+		[Display(Name = "Album")]
 		public int? AlbumId { get; set; }
 
 		[Display(Name = "Track Number")]
