@@ -1,0 +1,65 @@
+@model ABCMusic_Auth.Models.Song
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Create";
+}
+
+<div class="row">
+	<div class="col-md-3"></div>
+	<div class="abc-dialog create-dialog col-md-6">
+		<div class="row">
+			<h4 id="abc-dialog-title" class="panel-header">NEW SONG</h4>
+		</div>
+		<div class="row">
+			<form asp-action="AdminCreate">
+				<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+				<div class="form-group">
+					<label asp-for="Name" class="control-label"></label>
+					<input asp-for="Name" class="form-control" />
+					<span asp-validation-for="Name" class="text-danger"></span>
+				</div>
+				<div class="form-group">
+					<label asp-for="ArtistName" class="control-label"></label>
+					<input asp-for="ArtistName" class="form-control" />
+					<span asp-validation-for="ArtistName" class="text-danger"></span>
+				</div>
+				<div class="form-group">
+					<label asp-for="Length" class="control-label"></label>
+					<input asp-for="Length" class="form-control" />
+					<span asp-validation-for="Length" class="text-danger"></span>
+				</div>
+				<div class="form-group">
+					<label asp-for="ReleaseDate" class="control-label"></label>
+					<input asp-for="ReleaseDate" class="form-control" type="date" />
+					<span asp-validation-for="ReleaseDate" class="text-danger"></span>
+				</div>
+				<div class="form-group">
+					<label asp-for="ArtistId" class="control-label">Artist</label>
+					<select asp-for="ArtistId" asp-items="ViewBag.ArtistUsername" class="form-control"></select>
+					<span asp-validation-for="ArtistId" class="text-danger"></span>
+				</div>
+				<div class="form-group">
+					<label asp-for="AlbumId" class="control-label"></label>
+					<select asp-for="AlbumId" asp-items="ViewBag.AlbumId" class="form-control"></select>
+					<span asp-validation-for="ArtistId" class="text-danger"></span>
+				</div>
+				<div class="form-group">
+					<label asp-for="TrackNumber" class="control-label"></label>
+					<input asp-for="TrackNumber" class="form-control" />
+					<span asp-validation-for="TrackNumber" class="text-danger"></span>
+				</div>
+				<div class="form-group">
+					<label asp-for="Publisher" class="control-label"></label>
+					<input asp-for="Publisher" class="form-control" />
+					<span asp-validation-for="Publisher" class="text-danger"></span>
+				</div>
+				<div class="form-group middle-align">
+					<input type="submit" value="Create" class="btn new-button" />
+					<input type="button" value="Cancel" class="btn btn-danger" onclick="location.href='@Url.Action("Admin", "Songs")'" />
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="col-md-3"></div>
+</div>

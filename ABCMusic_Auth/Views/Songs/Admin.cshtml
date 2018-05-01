@@ -1,0 +1,242 @@
+﻿@model IEnumerable<ABCMusic_Auth.Models.Song>
+
+@using ABCMusic_Auth.Utilities
+@using ABCMusic_Auth.Models.SearchViewModels;
+
+@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+	ViewData["Title"] = "My Songs";
+	IPaginator<Song> paginator = ViewData["paginator"] as IPaginator<Song>;
+	AdminSongSearchViewModel viewModel = ViewData["searchSettings"] as AdminSongSearchViewModel;
+}
+
+<div class="row" id="title-area">
+	<div class="col-md-9">
+		<h2 class="abc-page-title">
+			ALL SONGS |
+			<a asp-action="Admin" asp-controller="Albums" class="abc-title-link">ALL ALBUMS</a>
+		</h2>
+	</div>
+	<div class="col-md-3" id="button-new" onclick="location.href='@Url.Action("AdminCreate", "Songs")'">
+		<p>Create New</p>
+	</div>
+</div>
+
+<div class="row abc-panel" id="search-panel">
+	<h3 class="col-md-12 panel-header">SEARCH</h3>
+
+	<form method="post" asp-action="Admin" class="">
+		<input name="AlbumId" type="hidden" value="@viewModel.AlbumId" />
+		<div class="row">
+			<div class="col-md-4">
+				<label for="SearchCriteria">Search Criteria</label><br>
+				<input name="SearchCriteria" type="text" class="abc-form-field" value="@viewModel.SearchCriteria" />
+			</div>
+			<div class="col-md-2">
+				<label for="StartDate">From</label><br>
+				<input name="StartDate" type="date" class="abc-form-field" value="@viewModel.StartDate" />
+			</div>
+			<div class="col-md-2">
+				<label for="EndDate">To</label><br>
+				<input name="EndDate" type="date" class="abc-form-field" value="@viewModel.EndDate" />
+			</div>
+			<div class="col-md-2">
+				<label for="Rating">Rating (0-5)</label><br>
+				<input name="Rating" type="range" class="abc-form-field" min="0" max="5" value="@viewModel.Rating" />
+			</div>
+			@*<div class="col-md-2">
+				<label for="AlbumId">Album</label><br />
+				<select for="AlbumId" class="abc-form-field" asp-items="ViewBag.AlbumId"></select>
+			</div>*@
+		</div>
+		<div class="row">
+			@*<div class="col-md-2">
+				<label for="UserName">Artist</label><br />
+				<select for="UserName" class="abc-form-field" asp-items="ViewBag.ArtistUsername"></select>
+			</div>*@
+			<div class="col-md-2">
+				<br />
+				<input type="submit" value="Search" class="btn btn-primary" />
+				<input type="reset" value="Reset" class="btn btn-primary" onclick="location.href='@Url.Action("Admin", "Songs")'" />
+			</div>
+		</div>
+	</form>
+</div>
+
+<div class="row abc-panel" id="results-panel">
+	<h3 class="col-md-12 panel-header">RESULTS</h3>
+
+	<table class="table">
+		<thead>
+			<tr class="abc-header-row">
+				<th>
+					@Html.ActionLink($"Song {Html.DisplayNameFor(model => model.Name)}", "Admin", "Songs",
+						new AdminSongSearchViewModel
+						{
+							EndDate = viewModel.EndDate,
+							FlipOrder = false,
+							PageNumber = 1,
+							PageSize = paginator.ItemsPerPage,
+							SearchCriteria = viewModel.SearchCriteria,
+							SortOrder = "song-name",
+							StartDate = viewModel.StartDate,
+							Rating = viewModel.Rating,
+							AlbumId = viewModel.AlbumId,
+							UserName = viewModel.UserName
+						})
+				</th>
+				<th>
+					@*@Html.DisplayNameFor((Song model) => model.Artist.GetName())*@
+					@Html.ActionLink("Artist", "Admin", "Songs",
+						new AdminSongSearchViewModel
+						{
+							EndDate = viewModel.EndDate,
+							FlipOrder = false,
+							PageNumber = 1,
+							PageSize = paginator.ItemsPerPage,
+							SearchCriteria = viewModel.SearchCriteria,
+							SortOrder = "song-name",
+							StartDate = viewModel.StartDate,
+							Rating = viewModel.Rating,
+							AlbumId = viewModel.AlbumId,
+							UserName = viewModel.UserName
+						})
+				</th>
+				<th>
+					@Html.ActionLink($"Album {Html.DisplayNameFor(model => model.Album.Name)}", "Admin", "Songs",
+						new AdminSongSearchViewModel
+						{
+							EndDate = viewModel.EndDate,
+							FlipOrder = false,
+							PageNumber = 1,
+							PageSize = paginator.ItemsPerPage,
+							SearchCriteria = viewModel.SearchCriteria,
+							SortOrder = "song-name",
+							StartDate = viewModel.StartDate,
+							Rating = viewModel.Rating,
+							AlbumId = viewModel.AlbumId,
+							UserName = viewModel.UserName
+						})
+				</th>
+				@*<th>
+						@Html.DisplayNameFor(model => model.Length)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.Publisher)
+					</th>*@
+				<th>
+					@Html.ActionLink($"{Html.DisplayNameFor(model => model.ReleaseDate)}", "Admin", "Songs",
+						new AdminSongSearchViewModel
+						{
+							EndDate = viewModel.EndDate,
+							FlipOrder = false,
+							PageNumber = 1,
+							PageSize = paginator.ItemsPerPage,
+							SearchCriteria = viewModel.SearchCriteria,
+							SortOrder = "song-name",
+							StartDate = viewModel.StartDate,
+							Rating = viewModel.Rating,
+							AlbumId = viewModel.AlbumId,
+							UserName = viewModel.UserName
+						})
+				</th>
+				@*<th>
+						@Html.DisplayNameFor(model => model.TrackNumber)
+					</th>*@
+				<th class="right-align">
+					<input type="reset"
+						   value="Reverse"
+						   class="btn btn-primary"
+						   onclick="location.href='@Url.Action("Admin", "Songs", new AdminSongSearchViewModel
+							{
+								EndDate = viewModel.EndDate,
+								FlipOrder = false,
+								PageNumber = 1,
+								PageSize = paginator.ItemsPerPage,
+								SearchCriteria = viewModel.SearchCriteria,
+								SortOrder = "song-name",
+								StartDate = viewModel.StartDate,
+								Rating = viewModel.Rating,
+								AlbumId = viewModel.AlbumId,
+								UserName = viewModel.UserName
+							})'" />
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var item in Model)
+			{
+				<tr class="abc-item-row abc-song">
+					<td>
+						@Html.DisplayFor(modelItem => item.Name)
+					</td>
+					<td>
+						@if (item.ArtistName != null)
+						{
+							@Html.DisplayFor(modelItem => item.ArtistName)
+						}
+						else
+						{
+							@Html.DisplayFor(modelItem => item.Artist.GetName())
+						}
+					</td>
+					<td>
+						@if (item.Album != null)
+						{
+							@Html.DisplayFor(modelItem => item.Album.Name)
+						}
+					</td>
+					@*<td>
+							@Html.DisplayFor(modelItem => item.Length)
+						</td>
+						<td>
+							@Html.DisplayFor(modelItem => item.Publisher)
+						</td>*@
+					<td>
+						@Html.DisplayFor(modelItem => item.ReleaseDate)
+					</td>
+					@*<td>
+							@if (item.TrackNumber != null) {
+								@Html.DisplayFor(modelItem => item.TrackNumber)
+							}
+						</td>*@
+					<td class="right-align">
+						<input type="button" value="Edit" class="btn update-button" onclick="location.href='@Url.Action("AdminEdit", "Songs", new { item.Id })'" />
+						<input type="button" value="View" class="btn btn-primary" onclick="location.href='@Url.Action("AdminDetails", "Songs", new { item.Id })'" />
+						<input type="button" value="Reviews" class="btn btn-primary" onclick="location.href='@Url.Action("ReviewsBySong", "Reviews", new { id = item.Id })'" />
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+
+	<div class="row">
+		<div class="col-md-12">
+			@Html.Raw(paginator.RenderPaginatorNav(page => Url.Action("Admin",
+				new AdminSongSearchViewModel
+				{
+					EndDate = viewModel.EndDate,
+					FlipOrder = viewModel.FlipOrder,
+					PageNumber = page,
+					PageSize = paginator.ItemsPerPage,
+					SearchCriteria = viewModel.SearchCriteria,
+					SortOrder = viewModel.SortOrder,
+					StartDate = viewModel.StartDate,
+					Rating = viewModel.Rating,
+					AlbumId = viewModel.AlbumId,
+					UserName = viewModel.UserName
+				})))
+		</div>
+	</div>
+</div>
+
+<script>
+	var emphasis = @ViewData["emphasisHeaderNum"];
+	if ((emphasis) != null) {
+		if (emphasis >= 0 && emphasis <= 3) {
+			document.getElementsByClassName("abc-header-row")[0]
+				.getElementsByTagName("th")[emphasis]
+				.style.fontSize = "18px";
+		}
+	}
+</script>

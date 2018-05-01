@@ -481,6 +481,13 @@ namespace ABCMusic_Auth.Controllers
 		[ActionName("Index")]
 		public async Task<IActionResult> IndexAsync()
 		{
+			// ensure user's role is Admin
+			// ApplicationUser currentUser = await _userManager.FindByNameAsync(User.Identity.Name);
+			// if (!await _userManager.IsInRoleAsync(currentUser, "Admin"))
+			// {
+			// 	return RedirectToAction("AccessDenied", "Error");
+			// }
+
 			var users = await _userManager.Users.ToListAsync();
 			var model = new List<EditUserViewModel>();
 
@@ -514,9 +521,17 @@ namespace ABCMusic_Auth.Controllers
 			return View(model);
 		}
 
-		[HttpGet]
-		public IActionResult Create()
+		[HttpGet, ActionName("Create")]
+		public async Task<IActionResult> CreateAsync()
+		//public IActionResult Create()
 		{
+			// ensure user's role is Admin
+			ApplicationUser currentUser = await _userManager.FindByNameAsync(User.Identity.Name);
+			if (!await _userManager.IsInRoleAsync(currentUser, "Admin"))
+			{
+				return RedirectToAction("AccessDenied", "Error");
+			}
+
 			return View();
 		}
 
@@ -529,8 +544,15 @@ namespace ABCMusic_Auth.Controllers
 			string userName = User.Identity.Name;
 			if (userName == null) { return StatusCode(400); }
 
-			// // validate user's authority to create user
-			// // only admin allowed
+			// ensure user's role is admin
+			ApplicationUser currentUser = await _userManager.FindByNameAsync(User.Identity.Name);
+			if (!await _userManager.IsInRoleAsync(currentUser, "Admin"))
+			{
+				return RedirectToAction("AccessDenied", "Error");
+			}
+
+			// validate user's authority to create user
+			// only admin allowed
 			// ApplicationUser currentUser = await _userManager.FindByNameAsync(userName);
 			// if (await _userManager.IsInRoleAsync(currentUser, "Admin")) {}
 			// else
@@ -575,6 +597,13 @@ namespace ABCMusic_Auth.Controllers
 				return new StatusCodeResult(400);
 			}
 
+			// ensure user's role is admin
+			ApplicationUser currentUser = await _userManager.FindByNameAsync(User.Identity.Name);
+			if (!await _userManager.IsInRoleAsync(currentUser, "Admin"))
+			{
+				return RedirectToAction("AccessDenied", "Error");
+			}
+
 			ApplicationUser user = await _userManager.FindByNameAsync(userName);
 
 			if (user == null)
@@ -592,6 +621,13 @@ namespace ABCMusic_Auth.Controllers
 		//[Authorize(Roles = "Admin")]
 		public async Task<IActionResult> EditAsync([Bind("UserName,LastName,FirstName,Email,Password,ConfirmPassword,Age,Gender")] EditUserViewModel userModel)
 		{
+			// ensure user's role is admin
+			ApplicationUser currentUser = await _userManager.FindByNameAsync(User.Identity.Name);
+			if (!await _userManager.IsInRoleAsync(currentUser, "Admin"))
+			{
+				return RedirectToAction("AccessDenied", "Error");
+			}
+
 			if (ModelState.IsValid)
 			{
 				ApplicationUser user = await _userManager.FindByNameAsync(userModel.UserName);
@@ -624,6 +660,13 @@ namespace ABCMusic_Auth.Controllers
 		//[Authorize(Roles = "Admin")]
 		public async Task<IActionResult> DeleteAsync(string userName = null)
 		{
+			// ensure user's role is admin
+			ApplicationUser currentUser = await _userManager.FindByNameAsync(User.Identity.Name);
+			if (!await _userManager.IsInRoleAsync(currentUser, "Admin"))
+			{
+				return RedirectToAction("AccessDenied", "Error");
+			}
+
 			if (userName == null)
 			{
 				return StatusCode(400);
@@ -648,6 +691,13 @@ namespace ABCMusic_Auth.Controllers
 		//[Authorize(Roles = "Admin")]
 		public async Task<IActionResult> DeleteConfirmedAsync(string userName)
 		{
+			// ensure user's role is admin
+			ApplicationUser currentUser = await _userManager.FindByNameAsync(User.Identity.Name);
+			if (!await _userManager.IsInRoleAsync(currentUser, "Admin"))
+			{
+				return RedirectToAction("AccessDenied", "Error");
+			}
+
 			//ApplicationUser user = await _userManager.FindByNameAsync(userName);
 			ApplicationUser user = await _dataContext.Users
 				.Include(u => u.Reviews)

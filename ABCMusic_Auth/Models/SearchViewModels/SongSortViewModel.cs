@@ -26,4 +26,27 @@ namespace ABCMusic_Auth.Models.SearchViewModels
 
 		public int? AlbumId { get; set; }
     }
+
+	public class AdminSongSearchViewModel
+    {
+        public int? PageNumber { get; set; }
+
+		public int? PageSize { get; set; }
+
+		public string SortOrder { get; set; }
+
+		public bool FlipOrder { get; set; }
+
+		public string StartDate { get; set; }
+
+		public string EndDate { get; set; }
+
+		public string SearchCriteria { get; set; }
+
+		public byte Rating { get; set; }
+
+		public int? AlbumId { get; set; }
+
+		public string UserName { get; set; }
+    }
 }
